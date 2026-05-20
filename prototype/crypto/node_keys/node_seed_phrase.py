@@ -8,8 +8,7 @@ ENTROPY_BYTES = 256
 SEED_BYTES = 64
 PBKDF2_HASH = "sha512"
 PBKDF2_ROUNDS = 2048
-PBKDF2_SALT = "DePropago"
-PBKDF2_SALT_BYTES = Mnemonic.normalize_string(PBKDF2_SALT).encode("UTF-8")
+PBKDF2_SALT = "DePropago".encode("ASCII")
 
 
 class NodeSeedPhrase:
@@ -37,13 +36,10 @@ class NodeSeedPhrase:
     def to_node_master_seed(self) -> bytes:
         # return self.__MNEMONIC.to_seed(mnemonic=self.__phrase)  # Cannot be used due to constant salt
 
-        normalized_phrase = Mnemonic.normalize_string(self.__phrase)
-        normalized_phrase_bytes = normalized_phrase.encode("UTF-8")
-
         stretched = hashlib.pbkdf2_hmac(
             hash_name=PBKDF2_HASH,
-            password=normalized_phrase_bytes,
-            salt=PBKDF2_SALT_BYTES,
+            password=self.__phrase.encode("ASCII"),
+            salt=PBKDF2_SALT,
             iterations=PBKDF2_ROUNDS,
         )
 
