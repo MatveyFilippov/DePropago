@@ -4,4 +4,9 @@ __version__ = "0.0.1"
 __author__ = "homer"
 __all__ = [
 
+    # crypto.node_keys.NodeKeys, crypto.node_keys.NodePublicKey, crypto.node_keys.NodeSeedPhrase
+    "crypto",
+
 ]
+
+from . import crypto
