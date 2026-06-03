@@ -4,8 +4,8 @@ __version__ = "0.0.1"
 __author__ = "homer"
 __all__ = [
 
-    # crypto.node_keys.NodeKeys, crypto.node_keys.NodePublicKey, crypto.node_keys.NodeSeedPhrase
-    # crypto.utils.MessageSignatureUtils
+    # crypto.node_keys.NodeKeys, crypto.node_keys.NodePublicKey, crypto.node_keys.NodeSeedPhrase, crypto.node_keys.decode_node_public_key(), crypto.node_keys.encode_node_public_key()
+    # crypto.utils.MessageSignatureUtils, crypto.utils.sign_data, crypto.utils.verify_data_sign
     "crypto",
 
     # messages.Message
