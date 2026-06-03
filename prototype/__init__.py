@@ -9,12 +9,15 @@ __all__ = [
     "crypto",
 
     # messages.Message
-    # messages.models.UpdatePayload
+    # messages.models.UpdatePayload, messages.models.WhoAmIPayload, messages.models.WhoAmIResponsePayload, messages.models.ReachabilityCheckPayload, messages.models.KeepAlivePayload
     "messages",
 
     # node_catalogue.NodeAddress, node_catalogue.NodesFileStorage, node_catalogue.NodesFileStorageLMDB, node_catalogue.NodesTable
     "node_catalogue",
 
+    # network.DiscoveryNode, network.get_node(), network.Node, network.NodeSupportedUpdates, network.ReachableNode, network.UnreachableNode
+    "network",
+
 ]
 
-from . import crypto, messages, node_catalogue
+from . import crypto, messages, node_catalogue, network
