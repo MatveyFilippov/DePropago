@@ -9,8 +9,12 @@ __all__ = [
     "crypto",
 
     # messages.Message
+    # messages.models.UpdatePayload
     "messages",
+
+    # node_catalogue.NodeAddress, node_catalogue.NodesFileStorage, node_catalogue.NodesFileStorageLMDB, node_catalogue.NodesTable
+    "node_catalogue",
 
 ]
 
-from . import crypto, messages
+from . import crypto, messages, node_catalogue
