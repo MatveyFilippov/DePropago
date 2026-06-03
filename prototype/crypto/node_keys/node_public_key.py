@@ -1,10 +1,11 @@
 from base64 import urlsafe_b64decode, urlsafe_b64encode
+from weakref import WeakValueDictionary
 from cryptography.hazmat.primitives.asymmetric import ed25519
 
 
 class CacheLRU:
     FIFO_SIZE = 256
-    __cache: dict[bytes, 'NodePublicKey'] = {}
+    __cache: dict[bytes, 'NodePublicKey'] = WeakValueDictionary()
 
     @classmethod
     def is_exists(cls, raw_bytes: bytes) -> bool:
@@ -30,7 +31,7 @@ def decode_node_public_key(node_public_key: str) -> bytes:
 
 
 class NodePublicKey:
-    __slots__ = ("__raw_bytes", "__hash", "__str", "__key")
+    __slots__ = ("__raw_bytes", "__hash", "__str", "__key", "__weakref__")
 
     def __new__(cls, raw_bytes: bytes) -> 'NodePublicKey':
         if CacheLRU.is_exists(raw_bytes):

@@ -1,5 +1,6 @@
 from abc import ABC
 from dataclasses import asdict
+from types import MappingProxyType
 from typing import Any, ClassVar, Type
 
 
@@ -18,12 +19,16 @@ class Payload(ABC):
             cls._type_name = cls.__name__
         _PAYLOAD_REGISTRY[cls._type_name] = cls
 
+    @classmethod
+    def type_name(cls) -> str:
+        return cls._type_name
+
     def to_dict(self) -> dict[str, Any]:
         if not hasattr(self, "_dict_cache"):
             data = asdict(self)
             data["type"] = self._type_name
             object.__setattr__(self, "_dict_cache", data)
-        return self._dict_cache
+        return self._dict_cache.copy()
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> 'Payload':
@@ -31,5 +36,5 @@ class Payload(ABC):
         payload_cls = _PAYLOAD_REGISTRY[type_name]
         obj = payload_cls(**data)
         data["type"] = type_name
-        object.__setattr__(obj, "_dict_cache", data)
+        object.__setattr__(obj, "_dict_cache", MappingProxyType(data.copy()))
         return obj

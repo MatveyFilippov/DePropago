@@ -1,4 +1,4 @@
-from typing import Generic, TypeVar
+from typing import Any, Generic, TypeVar
 import orjson
 from .payload import Payload
 
@@ -33,24 +33,33 @@ class Message(Generic[P]):
     def signature(self) -> str:
         return self.__signature
 
+    def __repr__(self) -> str:
+        return f"Message(author={self.__author!r}, payload={self.__payload!r}, signature={self.__signature!r})"
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            MessageKeys.AUTHOR: self.__author,
+            MessageKeys.PAYLOAD: self.__payload.to_dict(),
+            MessageKeys.SIGNATURE: self.__signature,
+        }
+
     def to_json(self) -> bytes:
         if self.__json_cache is None:
-            self.__json_cache = orjson.dumps(
-                {
-                    MessageKeys.AUTHOR: self.__author,
-                    MessageKeys.PAYLOAD: self.__payload.to_dict(),
-                    MessageKeys.SIGNATURE: self.__signature,
-                },
-            )
+            _dict = self.to_dict()
+            self.__json_cache = orjson.dumps(_dict)
         return self.__json_cache
 
     @classmethod
-    def from_json(cls, data: bytes) -> 'Message':
-        json_dict = orjson.loads(data)
-        obj = cls(
-            author=json_dict[MessageKeys.AUTHOR],
-            payload=Payload.from_dict(json_dict[MessageKeys.PAYLOAD]),
-            signature=json_dict[MessageKeys.SIGNATURE],
+    def from_dict(cls, _dict: dict[str, Any]):
+        return cls(
+            author=_dict[MessageKeys.AUTHOR],
+            payload=Payload.from_dict(_dict[MessageKeys.PAYLOAD]),
+            signature=_dict[MessageKeys.SIGNATURE],
         )
-        obj.__json_cache = data
+
+    @classmethod
+    def from_json(cls, _json: bytes) -> 'Message':
+        _dict = orjson.loads(_json)
+        obj = cls.from_dict(_dict)
+        obj.__json_cache = _json
         return obj

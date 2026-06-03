@@ -27,7 +27,7 @@ class NodeSeedPhrase:
     def node_seed_phrase(self) -> str:
         return self.__phrase
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.__phrase
 
     def get_separate_node_seed_words(self) -> list[str]:
